@@ -123,7 +123,7 @@ class WebRTC {
 		})
 
 		this.#signaling.on('joined', (data) => { 
-			consoleinfo(`WebRTC: Operating ${data.rig} as ${data.op}`)
+			console.info(`WebRTC: Operating ${data.rig} as ${data.op}`)
 			this.#ready = true
 			this.iceServers = data.iceServers
 			// this._mic = await new Microphone(this.tcvr).request()
@@ -146,11 +146,11 @@ class WebRTC {
 		this.#initSignaling({url: kredence.qth})
 		
 		this.#signaling.on('connect', () => {
-			consoleinfo('WebRTC: Open rig', kredence.rig)  
+			console.info('WebRTC: Open rig', kredence.rig)  
 			this.sendSignal('open', kredence.rig)
 		})
 		this.#signaling.on('opened', data => {
-			consoleinfo('WebRTC: Opened rig', data.rig)
+			console.info('WebRTC: Opened rig', data.rig)
 			this.iceServers = data.iceServers
 			// this.#localStream.getAudioTracks().forEach(track => console.log(track.getSettings()))		
 			// this._localAudio.srcObject = stream;
@@ -159,7 +159,7 @@ class WebRTC {
 		this.#signaling.on('join', op => {
 			// whoNow = op
 			// authTime = secondsNow()
-			consoleinfo(`WebRTC: Operator ${op} made a request to operate rig`)
+			console.info(`WebRTC: Operator ${op} made a request to operate rig`)
 			this.sendMessage({type: 'tcvrinfo', ...tcvrInfo()})
 			this.#ready = true
 		})
@@ -167,7 +167,7 @@ class WebRTC {
 	}
 
 	#initSignaling({url}) {
-		consoleinfo('WebRTC: connectSignaling:', url)
+		console.info('WebRTC: connectSignaling:', url)
 		this.#signaling = io.connect(`wss://${url}`, this.options.signaling)
 
 		this.#signaling.on('reconnect', () => console.debug('WebRTC: socket.io reconnected'))
@@ -184,7 +184,7 @@ class WebRTC {
 	}
 
 	#handleMessage(message) {
-		consoleinfo('WebRTC: signal message:', message)
+		console.info('WebRTC: signal message:', message)
 		if (message === 'ready' && this.#server) {
 			this.#maybeStart()
 			this.#doCall()
@@ -202,10 +202,10 @@ class WebRTC {
 		} else if (message.type === 'tcvrinfo') {
 			this.info = message
 		} else if (message === 'bye' && this.#started) {
-			consoleinfo('WebRTC: Session terminated.')
+			console.info('WebRTC: Session terminated.')
 			this.disconnect()
 		// } else if (message === 'restart') {
-		// 	consoleinfo('Session restart')
+		// 	console.info('Session restart')
 		// 	// Do RTCPeerConnection & RTCDataChannel reconnect without tcvr powerOff
 		// 	connectionReset = true
 		}
@@ -312,11 +312,11 @@ class WebRTC {
 	}
 
 	onControlClose() {
-		consoleinfo('WebRTC: Control channel closed')
+		console.info('WebRTC: Control channel closed')
 	}
 
 	onControlMessage(event) {
-		consoleinfo('WebRTC: command received:', event.data)
+		console.info('WebRTC: command received:', event.data)
 	}
 
 	onControlError(event) {
