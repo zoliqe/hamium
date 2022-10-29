@@ -6,6 +6,7 @@ class RemotigConnector {
   #iface
   #remotig
   #options
+  #reconnectTimmer
 
   constructor(tcvrAdapter, { options, keyerConfig }) {
     this.#options = options || {}
@@ -34,7 +35,7 @@ class RemotigConnector {
     }
     this.#iface.onclose = _ => {
       this.onReceive('closed')
-      // setTimeout(_ => this.init(), 5000)
+      this.#reconnectTimmer = setTimeout(_ => this.init(), 1000)
     }
     this.#iface.onerror = event => this.onReceiveError(event)
   }
@@ -54,6 +55,7 @@ class RemotigConnector {
     if (!this.connected) return
     console.debug('WsRemotig: disconnect')
     await this.#remotig.off()
+    clearTimeout(this.#reconnectTimmer)
     // await delay(200) // for poweroff signals TODO
     this.#iface.close()
   }
