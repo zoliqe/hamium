@@ -49,19 +49,19 @@ class WebRTC {
 		this.#started = false
 		this.#ready = false
 		if (this.#control) {
-			this.#control.close()
 			this.#control.onopen = null
 			// this._cmdChannel.onclose = null
 			this.#control.onerror = null
 			this.#control.onmessage = null
+			this.#control.close()
 			this.#control = null
 		}
 	
 		if (this.#pc) {
-			this.#pc.close()
 			this.#pc.onicecandidate = null
 			this.#pc.ontrack = null
 			// this.#pc.onremovetrack = null
+			this.#pc.close()
 			this.#pc = null
 		}
 		if (this.options.signaling.autoClose) {
