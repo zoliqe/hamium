@@ -159,7 +159,7 @@ class WebRTC {
 		this.#signaling.on('join', op => {
 			// whoNow = op
 			// authTime = secondsNow()
-			console.info(`WebRTC: Operator ${op} made a request to operate rig`)
+			this.onoperator(op)
 			this.sendMessage({type: 'tcvrinfo', ...tcvrInfo()})
 			this.#ready = true
 		})
@@ -323,6 +323,9 @@ class WebRTC {
 		console.error('WebRTC: command error:', event)
 	}
 
+	onoperator(operator) {
+		console.info(`WebRTC: Operator ${operator} made a request to operate rig`)
+	}
 }
 
 export { WebRTC }
