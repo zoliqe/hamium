@@ -35,7 +35,7 @@ class RemotigConnector {
     }
     this.#iface.onclose = _ => {
       this.onReceive('closed')
-      this.#reconnectTimmer = setTimeout(_ => this.init(), 1000)
+      this.#reconnectTimmer = setTimeout(_ => this.init({}), 1000)
     }
     this.#iface.onerror = event => this.onReceiveError(event)
   }
