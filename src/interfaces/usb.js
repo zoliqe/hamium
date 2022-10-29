@@ -29,7 +29,7 @@ export class USBInterface {
 		return 'USB'
 	}
 
-	async init() {
+	async init(onready) {
 		if (!navigator.usb) {
 			window.alert('USB not supported by browser. Cannot connect to transceiver.')
 			throw new Error('unsupported')
@@ -38,6 +38,7 @@ export class USBInterface {
 		if (paired.length === 1) {
 			[this._device] = paired
 			console.info('Found 1 paired device - could be opened instantly')
+			onready && onready()
 		}
 	}
 

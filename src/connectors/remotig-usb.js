@@ -24,8 +24,8 @@ class RemotigConnector {
     return 'remotig-usb'
   }
 
-  async init() {
-    await this.#iface.init()
+  async init({onready}) {
+    await this.#iface.init(onready)
   }
 
   async connect() {
