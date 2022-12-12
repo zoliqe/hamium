@@ -328,7 +328,6 @@ class Transceiver {
 		this._d("band", band)
 		this.#state.band = band
 
-		if (controller.preventSubcmd) return
 		if (this._bandTimer != null) { // another band change hit
 			clearTimeout(this._bandTimer)
 		}
@@ -336,6 +335,7 @@ class Transceiver {
 		this._bandTimer = setTimeout(() => {
 			this._bandTimer = null
 			this.fire(new TcvrSignal(SignalType.band, this.band))
+			if (controller.preventSubcmd) return // commands below are sub-commands (in context of remotig server - they are sent as separate commands)
 			this.fire(new TcvrSignal(SignalType.split, 0)) // disable RIT & SPLIT on current band
 			this.fire(new TcvrSignal(SignalType.rit, 0))
 			this.setFreq(this, this.#state.freq[this.#state.band][this.#state.vfobank])
@@ -449,7 +449,7 @@ class Transceiver {
 		if (this.modes.includes(value)) {
 			this.#state.mode = value
 			this.fire(new TcvrSignal(SignalType.mode, this.#state.mode))
-			if (controller.preventSubcmd) return
+			if (controller.preventSubcmd) return // commands below are sub-commands (in context of remotig server - they are sent as separate commands)
 			// this.fire(new TcvrSignal(SignalType.freq, this.#state.freq[this.#state.band][this.#state.vfobank]), {subcmd: true})
 			this.fire(new TcvrSignal(SignalType.filter, {filter: this.filter, mode: this.mode}), {subcmd: true})
 		}
