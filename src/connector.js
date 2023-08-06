@@ -18,6 +18,12 @@ export const get = async (connector, params) => {
 		const conn = await import('./connectors/remotig-remote.js')
 		return new conn.RemotigConnector(params.kredence, params)
 	}
+	if (connector === 'remotig2') {
+		if (!params || !params.kredence)
+			throw new Error('Remote connection credentials required')
+		const conn = await import('./connectors/remotig-remote2.js')
+		return new conn.RemotigConnector(params.kredence, params)
+	}
 	if (connector === 'remotig-ws') {
 		requireTcvr(params)
 		const adapter = await adapterFor(params.tcvr)
