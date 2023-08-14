@@ -15,6 +15,8 @@ export class USBInterface {
 		{ 'vendorId': 0x2341, 'productId': 0x8037 },
 		{ 'vendorId': 0x2886, 'productId': 0x802F }, // Seeed XIAO M0
 		{ 'vendorId': 0xcafe, 'productId': 0x4011 }, // TinyUSB on RPi Pico
+		{ 'vendorId': 0xcafe, 'productId': 0x4032 }, // TinyUSB on RPi Pico
+		{ 'vendorId': 0xcafe, 'productId': 0x7388 }, // Remoddle
 		{ 'vendorId': 0x2e8a, 'productId': 0x000a }, // TinyUSB on arduino-pico
 	],
 		receiveSeparator = '\n', sendSeparator = '\n') {
