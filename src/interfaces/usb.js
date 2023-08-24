@@ -125,6 +125,11 @@ export class USBInterface {
 	}
 
 	_handleReceived(data) {
+		if (!data.includes('$')) {
+			for (const c of data) {
+				this.receive(c)
+			}
+		}
 		for (const c of data) {
 			if (c === this._receiveSeparator) {
 				const cmd = this._receiveBuffer.trim()
