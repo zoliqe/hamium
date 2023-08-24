@@ -131,13 +131,12 @@ export class USBInterface {
 			}
 		}
 		for (const c of data) {
-			if (c === this._receiveSeparator) {
+			this._receiveBuffer += c
+			if (c === ';' /* this._receiveSeparator */) {
 				const cmd = this._receiveBuffer.trim()
 				this._receiveBuffer = ''
 				if (cmd)
 					this.receive(cmd)
-			} else {
-				this._receiveBuffer += c
 			}
 		}
 	}
