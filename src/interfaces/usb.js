@@ -125,6 +125,7 @@ export class USBInterface {
 	}
 
 	_handleReceived(data) {
+		console.debug(`USB => ${data}`)
 		// if (!data.includes('$')) {
 		// 	for (const c of data) {
 		// 		this.receive(c)
