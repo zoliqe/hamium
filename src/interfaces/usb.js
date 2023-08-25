@@ -125,21 +125,23 @@ export class USBInterface {
 	}
 
 	_handleReceived(data) {
-		if (!data.includes('$')) {
-			for (const c of data) {
-				this.receive(c)
-			}
-		} else {
-			for (const c of data) {
+		// if (!data.includes('$')) {
+		// 	for (const c of data) {
+		// 		this.receive(c)
+		// 	}
+		// } else {
+		for (const c of data) {
+			// this._receiveBuffer += c
+			if (c === /* ';' */ this._receiveSeparator) {
+				const cmd = this._receiveBuffer.trim()
+				this._receiveBuffer = ''
+				if (cmd)
+					this.receive(cmd)
+			} else {
 				this._receiveBuffer += c
-				if (c === ';' /* this._receiveSeparator */) {
-					const cmd = this._receiveBuffer.trim()
-					this._receiveBuffer = ''
-					if (cmd)
-						this.receive(cmd)
-				}
 			}
 		}
+		// }
 	}
 
 	get connected() {
