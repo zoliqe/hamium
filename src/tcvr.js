@@ -38,7 +38,7 @@ class Band {
 	static byFreq(freq) {
 		const f = Number(freq)
 		return Object.values(Bands)
-			.find(band => band.freqFrom <= f && band.freqTo >= f)
+			.find(band => (band.freqFrom - 10000) <= f && (band.freqTo + 10000) >= f)
 	}
 
 	toString() {
