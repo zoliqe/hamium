@@ -38,7 +38,11 @@ class Band {
 	static byFreq(freq) {
 		const f = Number(freq)
 		return Object.values(Bands)
-			.find(band => (band.freqFrom - 10000) <= f && (band.freqTo + 10000) >= f)
+			.find(band => (band.freqFrom - Band.overlap) <= f && (band.freqTo + Band.overlap) >= f)
+	}
+
+	static get overlap() { 
+		return 10000
 	}
 
 	toString() {
