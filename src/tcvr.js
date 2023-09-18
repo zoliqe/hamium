@@ -22,12 +22,14 @@ class Band {
 	#id
 	#freqFrom
 	#freqTo
+	#extend
 
-	constructor(name, id, minFreq, maxFreq) {
+	constructor(name, id, minFreq, maxFreq, extend = 10_000) {
 		this.#name = name
 		this.#id = id
 		this.#freqFrom = minFreq
 		this.#freqTo = maxFreq
+		this.#extend = extend
 	}
 
 	static byId(id) {
@@ -38,11 +40,7 @@ class Band {
 	static byFreq(freq) {
 		const f = Number(freq)
 		return Object.values(Bands)
-			.find(band => (band.freqFrom - Band.overlap) <= f && (band.freqTo + Band.overlap) >= f)
-	}
-
-	static get overlap() { 
-		return 10000
+			.find(band => (band.freqFrom - this.extend) <= f && (band.freqTo + this.extend) >= f)
 	}
 
 	toString() {
@@ -67,6 +65,10 @@ class Band {
 
 	get freqTo() {
 		return this.#freqTo
+	}
+
+	get extend() {
+		return this.#extend
 	}
 }
 
