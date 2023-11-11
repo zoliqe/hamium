@@ -29,7 +29,7 @@ class RemotigConnector {
         this._info = null;
 	}
 
-	get id() { return 'remotig'; }
+	get id() { return 'remotig2'; }
 
  	async connect() {
 		this._con = new WebSocket(`ws://${this.kredence.qth}:8088`);
