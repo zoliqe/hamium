@@ -33,7 +33,7 @@ export class Adapter {
 	}
 
 	static get models() {
-		return ['ts2000', 'ts450']
+		return ['ts2000', 'ts450', 'ts590']
 	}
 
 	_splitState = false
@@ -94,7 +94,7 @@ export class Adapter {
 	}
 
 	async agc({agc, mode}) { // 000=OFF, 001 (min.) ~ 020 (max.)
-		if (this.#model != 'ts2000') return
+		if (this.#model == 'ts450') return
 		let v = '001'
 		agc = resolveAgc(agc, mode)
 		if (agc === AgcTypes.SLOW) v = '020'
@@ -121,13 +121,13 @@ export class Adapter {
 	// }
 
 	async wpm(wpm) {
-		if (this.#model != 'ts2000') return
+		if (this.#model == 'ts450') return
 		if (wpm < 8 || wpm > 50) return
 		await this._uart(`KS${String(wpm).padStart(3, '0')}`)
 	}
 
 	async keymsg(msg) {
-		if (this.#model != 'ts2000') return
+		if (this.#model == 'ts450') return
 		if (!msg) return
 		await this._uart(`KY ${msg.length > 24 ? msg.substring(0, 24) : msg}`)
 	}
@@ -140,23 +140,27 @@ export class Adapter {
 		const filt = selectFilter(this.properties.filters(mode), filter)
 		if (this.#model == 'ts450') {
 			await this._uart(`FL005${FL[filt]}`) // TODO switch only 2nd IF filter
-		} else {
+		} else if (this.#model == 'ts2000') {
 			await this._uart(`FW${String(filt).padStart(4, '0')}`)
+		} else {
+			let bw = Number(filt) / 10
+			bw = String(bw).padStart(4, '0')
+			await this._uart(`BW${bw}`)
 		}
 	}
 
 	async txpower(level) {
-		if (this.#model != 'ts2000') return
+		if (this.#model == 'ts450') return
 		await this._uart(`PC${String(level).padStart(3, '0')}`)
 	}
 
 	async afgain(level) {
-		if (this.#model != 'ts2000') return
+		if (this.#model == 'ts450') return
 		await this._uart(`AG${String(level).padStart(3, '0')}`)
 	}
 
 	async rfgain(level) {
-		if (this.#model != 'ts2000') return
+		if (this.#model == 'ts450') return
 		await this._uart(`RG${String(level).padStart(3, '0')}`)
 	}
 
@@ -181,7 +185,7 @@ export class Adapter {
 			return
 		}
 		if (!this._rit) {
-			this._xit && (await this.xit(0))
+			// this._xit && (await this.xit(0))
 			await this._uart('RT1')
 		}
 		// P1: 00000 ~ 99999 (the offset frequency in Hz)
@@ -189,32 +193,32 @@ export class Adapter {
 		await this._uart(`RU${String(value).padStart(5, '0')}`)
 	}
 
-	async xit(value) {
-		if (!value) {
-//			this.clearXit()
-			this._xit = 0
-			await this._uart('XT0')
-			return
-		}
-		if (!this._xit) {
-			this._rit && (await this.rit(0))
-			await this._uart('XT1')
-		}
-		this._xit = value
-		await this._uart(`RU${String(value).padStart(5, '0')}`)
-	}
+// 	async xit(value) {
+// 		if (!value) {
+// //			this.clearXit()
+// 			this._xit = 0
+// 			await this._uart('XT0')
+// 			return
+// 		}
+// 		if (!this._xit) {
+// 			this._rit && (await this.rit(0))
+// 			await this._uart('XT1')
+// 		}
+// 		this._xit = value
+// 		await this._uart(`RU${String(value).padStart(5, '0')}`)
+// 	}
 
 	_diff10(v1, v2) {
 		return Math.floor(v2 / 10) - Math.floor(v1 / 10)
 	}
 
-	async clearRit() {
-		await this._uart('RC')
-		this._rit = 0
-	}
+	// async clearRit() {
+	// 	await this._uart('RC')
+	// 	this._rit = 0
+	// }
 
-	async clearXit() {
-		await this._uart('RC')
-		this._xit = 0
-	}
+	// async clearXit() {
+	// 	await this._uart('RC')
+	// 	this._xit = 0
+	// }
 }
