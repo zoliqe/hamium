@@ -129,6 +129,9 @@ export class Adapter {
 	async keymsg(msg) {
 		if (this.#model == 'ts450') return
 		if (!msg) return
+		if (this.#model == 'ts590') {
+			msg = msg.padEnd(24, ' ') // TS-590 needs fixed size of 24 bytes
+		}
 		await this._uart(`KY ${msg.length > 24 ? msg.substring(0, 24) : msg}`)
 	}
 
