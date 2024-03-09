@@ -147,9 +147,9 @@ export class Adapter {
 			await this._uart(`FW${String(filt).padStart(4, '0')}`)
 		} else {
 			let bw = Number(filt) // / 10
-			await this._uart(`FL${bw <= 500 ? 2 : 1}`)
-			// bw = String(bw).padStart(4, '0')
-			// await this._uart(`FW${bw}`)
+			await this._uart(`FL${bw <= 500 ? 1 : 2}`)
+			bw = String(bw).padStart(4, '0')
+			await this._uart(`FW${bw}`)
 		}
 	}
 
