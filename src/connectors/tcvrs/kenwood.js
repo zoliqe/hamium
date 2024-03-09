@@ -146,9 +146,10 @@ export class Adapter {
 		} else if (this.#model == 'ts2000') {
 			await this._uart(`FW${String(filt).padStart(4, '0')}`)
 		} else {
-			let bw = Number(filt) / 10
-			bw = String(bw).padStart(4, '0')
-			await this._uart(`BW${bw}`)
+			let bw = Number(filt) // / 10
+			await this._uart(`FL${bw <= 500 ? 2 : 1}`)
+			// bw = String(bw).padStart(4, '0')
+			// await this._uart(`FW${bw}`)
 		}
 	}
 
