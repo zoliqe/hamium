@@ -182,6 +182,7 @@ export class Adapter {
 	}
 
 	async rit(value) {
+		if (Math.abs(value) > 99999) return // P1: 00000 ~ 99999 (the offset frequency in Hz)
 		if (!value) {
 //			this.clearRit()
 			this._rit = 0
@@ -195,7 +196,6 @@ export class Adapter {
 
 		if (this.#model == 'ts590') {
 			const delta = value - this._rit
-			// P1: 00000 ~ 99999 (the offset frequency in Hz)
 			if (delta > 0) await this._uart(`RU${String(delta).padStart(5, '0')}`)
 			else await this._uart(`RD${String(0 - delta).padStart(5, '0')}`)
 		} else {
