@@ -192,9 +192,16 @@ export class Adapter {
 			// this._xit && (await this.xit(0))
 			await this._uart('RT1')
 		}
-		// P1: 00000 ~ 99999 (the offset frequency in Hz)
+
+		if (this.#model == 'ts590') {
+			const delta = value - this._rit
+			// P1: 00000 ~ 99999 (the offset frequency in Hz)
+			if (delta > 0) await this._uart(`RU${String(delta).padStart(5, '0')}`)
+			else await this._uart(`RD${String(0 - delta).padStart(5, '0')}`)
+		} else {
+			await this._uart(`RU${String(value).padStart(5, '0')}`)
+		}
 		this._rit = value
-		await this._uart(`RU${String(value).padStart(5, '0')}`)
 	}
 
 // 	async xit(value) {
