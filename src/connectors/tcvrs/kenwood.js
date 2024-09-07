@@ -192,6 +192,7 @@ export class Adapter {
 		if (!this._rit) {
 			// this._xit && (await this.xit(0))
 			await this._uart('RT1')
+			if (this.#model == 'ts590') await this._uart('RC') // clear RIT if previously set any
 		}
 
 		if (this.#model == 'ts590') {
