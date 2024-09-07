@@ -39,7 +39,6 @@ export class Adapter {
 	_splitState = false
 	_rit = 0
 	_xit = 0
-	_mode = 'CW'
 	
 	#options
 	#model
@@ -85,7 +84,6 @@ export class Adapter {
 
 	async mode(mode) {
 		const md = MD[mode]
-		this._mode = mode
 		if (md != null) {
 			await this._uart(`MD${md}`)
 		} else {
@@ -196,7 +194,6 @@ export class Adapter {
 		}
 
 		if (this.#model == 'ts590') {
-			if (this._mode == 'CW' || this._mode == 'LSB') value = 0 - value
 			const delta = value - this._rit
 			if (delta > 0) await this._uart(`RU${String(delta).padStart(5, '0')}`)
 			else await this._uart(`RD${String(0 - delta).padStart(5, '0')}`)
