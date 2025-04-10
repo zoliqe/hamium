@@ -252,7 +252,9 @@ class BluetoothInterface {
     this._log('Requesting bluetooth device...');
 
     return navigator.bluetooth.requestDevice({
-      filters: [{services: [this._serviceUuid]}],
+      // filters: [{services: [this._serviceUuid]}],
+      optionalServices: [this._serviceUuid],
+      acceptAllDevices: true,
     }).
         then((device) => {
           this._log('"' + device.name + '" bluetooth device selected');
