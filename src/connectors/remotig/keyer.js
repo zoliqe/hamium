@@ -5,12 +5,17 @@ export const defaultOptions = {
 	 // CT-spaces: 60, normal: 80
 	pttTimeout: 5000, ditCoef: 120, dahCoef: 120, elementSpaceCoef: 60, letterSpaceCoef: 60}
 
-const wpmCoef = 12000
-const calcLength = (wpm, coef) => Math.floor(coef * wpmCoef / wpm)
+const wpmCoef = 12
+const calcLength = (wpm, coef) => Math.floor(coef * 1000 * wpmCoef / wpm)
+const calcLengthMs = (wpm, coef) => Math.floor(coef * wpmCoef / wpm)
 export const ditLength = wpm => calcLength(wpm, defaultOptions.ditCoef)
 export const dahLength = wpm => calcLength(wpm, defaultOptions.ratio * defaultOptions.dahCoef)
 export const elementSpaceLength = wpm => calcLength(wpm, defaultOptions.elementSpaceCoef)
 export const letterSpaceLength = wpm => calcLength(wpm, defaultOptions.ratio * defaultOptions.letterSpaceCoef)
+export const ditLengthMs = wpm => calcLengthMs(wpm, defaultOptions.ditCoef)
+export const dahLengthMs = wpm => calcLengthMs(wpm, defaultOptions.ratio * defaultOptions.dahCoef)
+export const elementSpaceLengthMs = wpm => calcLengthMs(wpm, defaultOptions.elementSpaceCoef)
+export const letterSpaceLengthMs = wpm => calcLengthMs(wpm, defaultOptions.ratio * defaultOptions.letterSpaceCoef)
 
 export class Keyer {
 
