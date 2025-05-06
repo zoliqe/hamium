@@ -18,7 +18,6 @@ class BufferedWriter {
             const data = this.#buffer.shift()
             try {
                 await this.#writer(data)
-                await delay(100)
             } catch (error) {
                 if (error.toString().indexOf('GATT operation already in progress') > -1) {
                     console.debug(`BufferedWriter: delayed write of '${data}'`)
