@@ -3,7 +3,7 @@
 export const defaultOptions = {
 	ratio: 3,
 	 // CT-spaces: 60, normal: 80
-	pttTimeout: 5000, ditCoef: 120, dahCoef: 120, elementSpaceCoef: 60, letterSpaceCoef: 60}
+	pttTimeout: 5000, ditCoef: 100, dahCoef: 100, elementSpaceCoef: 80, letterSpaceCoef: 80}
 
 const wpmCoef = 12
 const calcLength = (wpm, coef) => Math.floor(coef * 1000 * wpmCoef / wpm)
