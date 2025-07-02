@@ -93,11 +93,12 @@ class RemotigConnector {
 	// "bandGains":{"160":[0,20],"80":[0,20],"40":[0,20],"30":[0,20],"20":[0,20],"17":[0,20],"15":[0,20],"12":[0,20],"10":[0,20]}},
 	// "propDefaults":{"band":20,"mode":"CW","agc":"FAST"}}
 	get tcvrProps() {
-		return this._info && new TransceiverProperties(this._info.props)
+		console.debug(`parsing tcvrProps: ${this._info && this._info.props}`);
+		return this._info && TransceiverProperties.fromJSON(this._info.props);
 	}
 
 	get tcvrDefaults() {
-		return this._info && this._info.propDefaults
+		return this._info && this._info.propDefaults;
 	}
 
 	_initSignals() {
