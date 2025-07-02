@@ -42,9 +42,10 @@ class RemotigConnector {
         this._con.onmessage = event => {
             const msg = String(event.data);
             if (msg.startsWith('info=')) {
-				this._info = JSON.parse(msg.substring(5));
-                // this._info = msg.substring(5);
-				console.debug(`TCVR info: ${this._info}`);
+				const info = msg.substring(5);
+				console.debug(`TCVR info: ${info}`);
+				this._info = JSON.parse(info);
+				console.debug(`parsed tcvrProps: ${this._info}`);
             } else if (msg.startsWith('pong=')) {
                 const t1 = new Date().valueOf();
                 const t0 = Number(msg.substring(5));
@@ -94,8 +95,7 @@ class RemotigConnector {
 	// "bandGains":{"160":[0,20],"80":[0,20],"40":[0,20],"30":[0,20],"20":[0,20],"17":[0,20],"15":[0,20],"12":[0,20],"10":[0,20]}},
 	// "propDefaults":{"band":20,"mode":"CW","agc":"FAST"}}
 	get tcvrProps() {
-		console.debug(`parsing tcvrProps: ${this._info}`);
-		return this._info && TransceiverProperties.fromJSON(this._info.props);
+		return this._info && new TransceiverProperties(this._info.props);
 	}
 
 	get tcvrDefaults() {
