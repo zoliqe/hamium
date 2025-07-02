@@ -18,15 +18,15 @@ class RemotigConnector {
 		this._con.send('hello=rozkvet');
 		console.log('ok, powering on');
 		this._con.send('poweron');
-		await delay(_connectDelay);
         this._con.send('info?');
+		await delay(_connectDelay);
         this._pingTimer = setInterval(_ => this._con.send(`ping=${new Date().valueOf()}`), 10000)
 		this._onconnect && this._onconnect();
 	}
 
 	_onControlClose(event) {
 		// event.code
-		console.info(`WebSocket close code: ${event.code}`);
+		console.info(`WebSocket close: ${event.code} ${event.reason}`);
         this._pingTimer && clearInterval(this._pingTimer);
         this._pingTimer = null;
         this._info = null;
