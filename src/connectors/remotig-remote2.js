@@ -45,7 +45,7 @@ class RemotigConnector {
 				const info = msg.substring(5);
 				console.debug(`TCVR info: ${info}`);
 				this._info = JSON.parse(info);
-				console.debug(`parsed tcvrProps: ${this._info}`);
+				console.debug('parsed tcvrProps: ', this._info);
             } else if (msg.startsWith('pong=')) {
                 const t1 = new Date().valueOf();
                 const t0 = Number(msg.substring(5));
