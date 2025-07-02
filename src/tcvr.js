@@ -140,7 +140,7 @@ class Transceiver {
 		let connectedConnector // all connectors have adapter to same tcvr type
 		for (const connector of connectors) {
 			connectedConnector = await this._connectConnector(connector)
-			this.#connectors.push(connectedConnector)
+			connectedConnector && this.#connectors.push(connectedConnector)
 		}
 
 		if (connectedConnector) {
@@ -165,9 +165,13 @@ class Transceiver {
 		// if (connector.connected) return connector
 		this._d('connect connector', connector.id)
 		await connector.connect(this)
-		this._d('connected', connector.id)
-		connector.signals.out.bind(this.#bus)
-		return connector
+		if (connector.connected) {
+			this._d('connected', connector.id)
+			connector.signals.out.bind(this.#bus)
+			return connector
+		}
+		this._d('connect failed', connector.id)
+		return null
 	}
 
 	async _initState(connector) {
