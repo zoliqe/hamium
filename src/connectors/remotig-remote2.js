@@ -15,6 +15,7 @@ class RemotigConnector {
 	}
 
 	async _onControlOpen() {
+		this._con.send('hello=rozkvet');
 		console.log('ok, powering on');
 		this._con.send('poweron');
 		await delay(_connectDelay);
@@ -23,7 +24,9 @@ class RemotigConnector {
 		this._onconnect && this._onconnect();
 	}
 
-	_onControlClose() {
+	_onControlClose(event) {
+		// event.code
+		console.info(`WebSocket close code: ${event.code}`);
         this._pingTimer && clearInterval(this._pingTimer);
         this._pingTimer = null;
         this._info = null;
@@ -34,7 +37,7 @@ class RemotigConnector {
  	async connect() {
 		this._con = new WebSocket(`ws://${this.kredence.qth}:8088`);
         this._con.onopen = event => this._onControlOpen();
-        this._con.onclose = event => this._onControlClose();
+        this._con.onclose = event => this._onControlClose(event);
         this._con.onerror = event => console.error('WebSocket error:', event);
         this._con.onmessage = event => {
             const msg = String(event.data);
@@ -44,7 +47,9 @@ class RemotigConnector {
                 const t1 = new Date().valueOf();
                 const t0 = Number(msg.substring(5));
                 console.info(`ResponseTime: ${t1 - t0}`);
-            }
+            } else {
+				console.info(`unknown msg received: ${msg}`);
+			}
         }
 		
 		this._initSignals()
@@ -81,6 +86,11 @@ class RemotigConnector {
 		// return statePromise
 	}
 
+	// {"props":{"bands":[160,80,40,30,20,17,15,12,10],
+	// "modes":["CW","CWR","LSB","USB"],"agcTypes":["FAST"],
+	// "modeFilters":{"CW":[2400,500],"CWR":[2400,500],"LSB":[2400,500],"USB":[2400,500]},
+	// "bandGains":{"160":[0,20],"80":[0,20],"40":[0,20],"30":[0,20],"20":[0,20],"17":[0,20],"15":[0,20],"12":[0,20],"10":[0,20]}},
+	// "propDefaults":{"band":20,"mode":"CW","agc":"FAST"}}
 	get tcvrProps() {
 		return this._info && new TransceiverProperties(this._info.props)
 	}
