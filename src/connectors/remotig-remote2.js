@@ -20,7 +20,7 @@ class RemotigConnector {
 		this._con.send('poweron');
 		await delay(_connectDelay);
         this._con.send('info?');
-        this._pingTimer = setInterval(_ => this._con.send(`ping=${new Date().valueOf()}`))
+        this._pingTimer = setInterval(_ => this._con.send(`ping=${new Date().valueOf()}`), 10000)
 		this._onconnect && this._onconnect();
 	}
 
@@ -43,6 +43,7 @@ class RemotigConnector {
             const msg = String(event.data);
             if (msg.startsWith('info=')) {
                 this._info = msg.substring(5);
+				console.debug(`TCVR info: ${this._info}`);
             } else if (msg.startsWith('pong=')) {
                 const t1 = new Date().valueOf();
                 const t0 = Number(msg.substring(5));
@@ -52,8 +53,8 @@ class RemotigConnector {
 			}
         }
 		
-		this._initSignals()
-		return new Promise(resolve => {this._onconnect = () => resolve(this)})
+		this._initSignals();
+		return new Promise(resolve => {this._onconnect = () => resolve(this)});
 	}
 
 	async disconnect() {
