@@ -35,7 +35,7 @@ class RemotigConnector {
 	get id() { return 'remotig2'; }
 
  	async connect() {
-		this._con = new WebSocket(`ws://${this.kredence.qth}:8088`);
+		this._con = new WebSocket(`ws://${this.kredence.qth}:8088/control`);
         this._con.onopen = event => this._onControlOpen();
         this._con.onclose = event => this._onControlClose(event);
         this._con.onerror = event => console.error('WebSocket error:', event);
