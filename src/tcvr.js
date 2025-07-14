@@ -180,6 +180,9 @@ class Transceiver {
 		this.#state.ptt = false
 		this.#state.keyed = false
 		this.#state.vfobank = 0
+		this.#state.pwr = 0
+		this.#state.afg = 0
+		this.#state.rfg = 0
 
 		const props = await connector.tcvrProps
 		const defaults = await connector.tcvrDefaults
